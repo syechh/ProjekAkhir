@@ -59,3 +59,24 @@ body {
 .submit-btn:hover {
     background-color: #0056b3;
 }
+
+.footer-login {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #888; /* Warna abu-abu lembut agar tidak mencolok */
+    font-size: 14px;
+    z-index: 10; /* Pastikan berada di atas background tapi di bawah modal */
+}
+
+.footer-login a {
+    color: #666;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+.footer-login a:hover {
+    color: #000; /* Efek hover sedikit lebih gelap */
+}

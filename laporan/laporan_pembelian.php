@@ -9,7 +9,7 @@ require '../config/koneksi.php';
     <title>Sistem Inventory</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body class="d-flex flex-column min-vh-100">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
@@ -56,7 +56,16 @@ require '../config/koneksi.php';
             <?php } ?>
         </tbody>
     </table>
+    
 </div>
-
+<footer class="bg-dark text-light pt-1 pb-1 mt-auto">
+        <div class="container">
+           
+            <div class="text-center small text-secondary">
+                &copy; 2026 Inventory System. Designed by Syech.
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
