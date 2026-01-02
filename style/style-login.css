@@ -1,0 +1,61 @@
+/* style-login.css untuk Opsi 1 */
+body {
+    background: #f4f6f9; /* Latar belakang abu-abu muda */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.form-structor {
+    width: 350px; /* Ukuran standar kartu */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
+    border-radius: 12px;
+    overflow: hidden;
+    background: white; /* Warna kartu putih */
+}
+
+.login {
+    padding: 30px;
+    text-align: center;
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input:focus {
+    border-color: #007bff; /* Garis biru saat fokus */
+    outline: none;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /* Warna tombol utama Bootstrap */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
