@@ -11,10 +11,11 @@
     <a class="navbar-brand" href="dashboard.php">Inventory System</a>
     <div class="navbar-nav">
       <a class="nav-link" href="barang/barang.php">Master Data Barang</a>
-      <a class="nav-link" href="pembelian/pembelian.php">Pencatatan Keluar Masuk Barang</a>
-      <a class="nav-link" href="penjualan/penjualan.php">Manajemen Stok</a>
-      <a class="nav-link" href="penjualan/penjualan.php">Laporan</a>
-      <!-- <a class="nav-link" href="laporan.php">Laporan Detail</a> -->
+      <a class="nav-link" href="pembelian/pembelian.php">Input Masuk Barang</a>
+      <a class="nav-link" href="penjualan/penjualan.php">Input Keluar Barang</a>
+      <a class="nav-link" href="laporan/laporan_pembelian.php">Laporan Pembelian</a>
+      <a class="nav-link" href="laporan/laporan_penjualan.php">Laporan Penjualan</a>
+      <a class="nav-link" href="index.php">Log Out</a>
     </div>
   </div>
 </nav>
@@ -28,12 +29,14 @@
                 <th>Nama Barang</th>
                 <th>Supplier</th>
                 <th>Stok Tersedia</th>
-                <th>Harga Dasar (Referensi)</th>
+                <th>Harga Beli</th>
+                <th>Harga Jual</th>
             </tr>
         </thead>
         <tbody>
             <?php
             include 'config/koneksi.php';
+
             $query = mysqli_query($con, "SELECT * FROM barang");
             while($row = mysqli_fetch_array($query)){
             ?>
@@ -42,7 +45,8 @@
                 <td><?= $row['nama_barang']; ?></td>
                 <td><?= $row['supplier']; ?></td>
                 <td><strong><?= $row['stok']; ?> pcs</strong></td>
-                <td>Rp <?= number_format($row['harga_dasar']); ?></td>
+                <td>Rp <?= number_format($row['harga_beli']); ?></td>
+                <td>Rp <?= number_format($row['harga_jual']); ?></td>
             </tr>
             <?php } ?>
         </tbody>

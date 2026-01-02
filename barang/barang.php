@@ -7,9 +7,10 @@ if(isset($_POST['tambah'])){
     $barang = $_POST['barang'];
     $supplier = $_POST['supplier'];
     $stok = $_POST['stok'];
-    $harga = $_POST['harga'];
-    
-    $sql = "INSERT INTO barang (nama_barang, supplier, stok, harga_dasar) VALUES ('$barang', $supplier, '$stok', '$harga')";
+    $harga_beli = $_POST['harga_beli'];
+    $harga_jual = $_POST['harga_jual'];
+
+    $sql = "INSERT INTO barang (nama_barang, supplier, stok, harga_beli, harga_jual) VALUES ('$barang', '$supplier', '$stok', '$harga_beli', '$harga_jual')";
     mysqli_query($con,$sql);
     
     
@@ -55,10 +56,12 @@ if(isset($_POST['tambah'])){
   <div class="container">
     <a class="navbar-brand" href="../dashboard.php">Inventory System</a>
     <div class="navbar-nav">
-      <a class="nav-link" href="../barang/barang.php">Stok Barang</a>
-      <a class="nav-link" href="../pembelian/pembelian.php">Input Pembelian (Supplier)</a>
-      <a class="nav-link" href="../penjualan/penjualan.php">Input Penjualan (Customer)</a>
-      <!-- <a class="nav-link" href="../laporan.php">Laporan Detail</a> -->
+      <a class="nav-link" href="../barang/barang.php">Master Data Barang</a>
+      <a class="nav-link" href="../pembelian/pembelian.php">Input Masuk Barang</a>
+      <a class="nav-link" href="../penjualan/penjualan.php">Input Keluar Barang</a>
+      <a class="nav-link" href="../laporan/laporan_pembelian.php">Laporan Pembelian</a>
+      <a class="nav-link" href="../laporan/laporan_penjualan.php">Laporan Penjualan</a>
+      <a class="nav-link" href="../index.php">Log Out</a>
     </div>
   </div>
 </nav>
@@ -71,15 +74,19 @@ if(isset($_POST['tambah'])){
         </tr>
         <tr>
             <td>Supplier</td>
-            <td><input type="text" name="supplier"  placeholder="nama barang"></td>
+            <td><input type="text" name="supplier"  placeholder="nama supplier"></td>
         </tr>
         <tr>
             <td>Stok</td>
             <td><input type="number" name="stok" ></td>
         </tr>
         <tr>
-            <td>Harga</td>
-            <td><input type="number" name="harga" ></td>
+            <td>Harga beli</td>
+            <td><input type="number" name="harga_beli" ></td>
+        </tr>
+        <tr>
+            <td>Harga jual</td>
+            <td><input type="number" name="harga_jual" ></td>
         </tr>
         <tr>
             <td><input type="submit" name="tambah" value="tambah"></td>
