@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <style>
-        /* Kustomisasi Sedikit agar persis gambar */
         body {
             background-color: #f0f2f5;
         }
@@ -16,7 +15,7 @@
             width: 100%;
             max-width: 400px;
             border-radius: 8px;
-            border: none; /* Hilangkan border bawaan bootstrap card */
+            border: none;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .form-control {

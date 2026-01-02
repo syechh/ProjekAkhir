@@ -1,7 +1,8 @@
 <?php 
+session_start();
 require '../config/koneksi.php';
 
-$message = ""; // Variabel untuk menampung pesan notifikasi
+$message = ""; 
 
 if(isset($_POST['tambah'])){
     $barang = $_POST['barang'];
@@ -14,13 +15,11 @@ if(isset($_POST['tambah'])){
     $query = mysqli_query($con, $sql);
     
     if($query){
-        // Menggunakan Alert Bootstrap Success
         $message = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="bi bi-check-circle-fill me-2"></i> Berhasil menambahkan stok barang!
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>';
     }else{
-        // Menggunakan Alert Bootstrap Danger
         $message = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i> Gagal menambahkan barang.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -50,7 +49,7 @@ if(isset($_POST['tambah'])){
             background-color: white;
         }
         .navbar-custom {
-            background-color: #0d6efd; /* Primary Blue */
+            background-color: #0d6efd;
         }
     </style>
 </head>
