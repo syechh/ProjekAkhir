@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION["username"]) && ($_SESSION["role"])) {
+    header("location: ../index.php");
+    exit();
+}
+
 require '../config/koneksi.php'; 
 
 
@@ -73,12 +78,18 @@ if(isset($_POST['simpan_transaksi'])){
   <div class="container">
     <a class="navbar-brand" href="../dashboard.php">Inventory System</a>
     <div class="navbar-nav">
+       <?php if ($_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="../barang/barang.php">Master Data Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'penjaga gudang' || $_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="../pembelian/pembelian.php">Input Masuk Barang</a>
-      <a class="nav-link" href="../penjualan/penjualan.php">Input Keluar Barang</a>
+      <a class="nav-link active" href="../penjualan/penjualan.php">Input Keluar Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'owner' || $_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="../laporan/laporan_pembelian.php">Laporan Pembelian</a>
       <a class="nav-link" href="../laporan/laporan_penjualan.php">Laporan Penjualan</a>
-      <a class="nav-link" href="../index.php">Log Out</a>
+      <?php } ?>
+      <a class="nav-link text-danger fw-bold" href="../index.php">Log Out</a>
     </div>
   </div>
 </nav>
@@ -88,7 +99,7 @@ if(isset($_POST['simpan_transaksi'])){
         
         <div class="col-md-4">
             <div class="card shadow-sm">
-                <div class="card-header bg-white"><strong>1. Pilih Barang Masuk</strong></div>
+                <div class="card-header bg-white"><strong>Pilih Barang Keluar</strong></div>
                 <div class="card-body">
                     <form method="POST">
                         <div class="mb-3">
@@ -104,10 +115,10 @@ if(isset($_POST['simpan_transaksi'])){
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label>Jumlah (Qty)</label>
+                            <label>Qty</label>
                             <input type="number" name="qty" class="form-control" required min="1" placeholder="0">
                         </div>
-                        <button type="submit" name="tambah_item" class="btn btn-primary w-100">+ Tambahkan</button>
+                        <button type="submit" name="tambah_item" class="btn btn-primary w-100">Tambahkan</button>
                     </form>
                 </div>
             </div>
@@ -115,7 +126,7 @@ if(isset($_POST['simpan_transaksi'])){
 
         <div class="col-md-8">
             <div class="card shadow-sm">
-                <div class="card-header bg-white"><strong>2. Review Transaksi</strong></div>
+                <div class="card-header bg-white"><strong>Review Transaksi</strong></div>
                 <div class="card-body">
                     <form method="POST">
                         <div class="row mb-3">

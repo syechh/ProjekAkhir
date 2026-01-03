@@ -1,5 +1,9 @@
 <?php 
 session_start();
+if (!isset($_SESSION["username"]) && ($_SESSION["role"])) {
+    header("location: ../index.php");
+    exit();
+}
 require '../config/koneksi.php';
 
 $message = ""; 
@@ -55,24 +59,25 @@ if(isset($_POST['tambah'])){
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="../dashboard.php">Inventory System</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="navbar-nav ms-auto">
-              <a class="nav-link active" href="../barang/barang.php">Master Data Barang</a>
-              <a class="nav-link" href="../pembelian/pembelian.php">Input Masuk Barang</a>
-              <a class="nav-link" href="../penjualan/penjualan.php">Input Keluar Barang</a>
-              <a class="nav-link" href="../laporan/laporan_pembelian.php">Laporan Pembelian</a>
-              <a class="nav-link" href="../laporan/laporan_penjualan.php">Laporan Penjualan</a>
-              <a class="nav-link text-warning fw-bold" href="../index.php">Log Out</a>
-            </div>
-        </div>
-      </div>
-    </nav>
+ <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="../dashboard.php">Inventory System</a>
+    <div class="navbar-nav">
+       <?php if ($_SESSION['role'] == 'admin') { ?>
+      <a class="nav-link active" href="../barang/barang.php">Master Data Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'penjaga gudang' || $_SESSION['role'] == 'admin') { ?>
+      <a class="nav-link" href="../pembelian/pembelian.php">Input Masuk Barang</a>
+      <a class="nav-link" href="../penjualan/penjualan.php">Input Keluar Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'owner' || $_SESSION['role'] == 'admin') { ?>
+      <a class="nav-link" href="../laporan/laporan_pembelian.php">Laporan Pembelian</a>
+      <a class="nav-link" href="../laporan/laporan_penjualan.php">Laporan Penjualan</a>
+      <?php } ?>
+      <a class="nav-link text-danger fw-bold" href="../index.php">Log Out</a>
+    </div>
+  </div>
+</nav>
 
     <div class="container flex-grow-1 mb-5">
         <div class="row justify-content-center">
@@ -82,7 +87,7 @@ if(isset($_POST['tambah'])){
 
                 <div class="card form-card p-4">
                     <div class="card-body">
-                        <h3 class="card-title text-center fw-bold mb-4">Master bi-exclamation-triangle-fill</h3>
+                        <h3 class="card-title text-center fw-bold mb-4">Master Data Barang</h3>
                         
                         <form action="" method="post">
                             

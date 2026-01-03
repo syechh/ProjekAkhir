@@ -1,12 +1,11 @@
 <?php
 session_start();
-include 'koneksi.php'; // File koneksi database
+include 'koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Query untuk mencari user berdasarkan username dan password
     $query = "SELECT * FROM users WHERE username = ? AND password = ?";
     $stmt = $con->prepare($query);
     $stmt->bind_param("ss", $username, $password);
@@ -16,12 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
-        // Set session
         $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['login'] = true;
 
-        // Redirect berdasarkan role
-        switch ($user['username']) {
-            case 'syech':
+        switch ($user['role']) {
+            case 'admin':
+                header('Location: ../dashboard.php');
+                break;
+            case 'penjaga gudang':
+                header('Location: ../dashboard.php');
+                break;
+            case 'owner':
                 header('Location: ../dashboard.php');
                 break;
             default:

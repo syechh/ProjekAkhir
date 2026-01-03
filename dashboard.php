@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION["username"]) && ($_SESSION["role"])) {
+    header("location: index.php");
+    exit();
+}
+require 'config/koneksi.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,18 +18,31 @@
   <div class="container">
     <a class="navbar-brand" href="dashboard.php">Inventory System</a>
     <div class="navbar-nav">
+       <?php if ($_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="barang/barang.php">Master Data Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'penjaga gudang' || $_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="pembelian/pembelian.php">Input Masuk Barang</a>
       <a class="nav-link" href="penjualan/penjualan.php">Input Keluar Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'owner' || $_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="laporan/laporan_pembelian.php">Laporan Pembelian</a>
       <a class="nav-link" href="laporan/laporan_penjualan.php">Laporan Penjualan</a>
-      <a class="nav-link" href="index.php">Log Out</a>
+      <?php } ?>
+      <a class="nav-link text-danger fw-bold" href="index.php">Log Out</a>
     </div>
   </div>
 </nav>
 
 <div class="container mt-4">
     <h3>Stok Barang Saat Ini</h3>
+    <form action="" method="post">
+    <table>
+    <td><input type="text" name="barang" placeholder="cari barang.."></td>
+    <td><button type="submit" name="cari" >CARI</button></td>
+    </table>
+    </form>
+    <br>
     <table class="table table-bordered table-striped bg-white">
         <thead>
             <tr>
@@ -35,20 +56,37 @@
         </thead>
         <tbody>
             <?php
-            include 'config/koneksi.php';
-
-            $query = mysqli_query($con, "SELECT * FROM barang");
-            while($row = mysqli_fetch_array($query)){
+            if(isset($_POST['cari'])){
+                $cari = mysqli_real_escape_string($con, trim($_POST['barang']));
+                $sql = mysqli_query($con ,"SELECT * from barang where nama_barang like '%$cari%'");
+                while($data = mysqli_fetch_assoc($sql)){
+                echo"
+                <tr>
+                    <td>{$data['id']} </td>
+                    <td>{$data['nama_barang']} </td>
+                    <td>{$data['supplier']} </td>
+                    <td><strong>{$data['stok']} pcs</strong></td>
+                    <td>Rp.{$data['harga_beli']}</td>
+                    <td>Rp.{$data['harga_jual']}</td>
+                </tr>
+                ";
+                }
+            }else{
+            $sql = mysqli_query($con, "SELECT * FROM barang");
+            while($data = mysqli_fetch_array($sql)){
+            echo"
+                <tr>
+                    <td>{$data['id']} </td>
+                    <td>{$data['nama_barang']} </td>
+                    <td>{$data['supplier']} </td>
+                    <td><strong>{$data['stok']} pcs</strong></td>
+                    <td>Rp.{$data['harga_beli']}</td>
+                    <td>Rp.{$data['harga_jual']}</td>
+                </tr>
+            ";
+            }
+            }
             ?>
-            <tr>
-                <td><?= $row['id']; ?></td>
-                <td><?= $row['nama_barang']; ?></td>
-                <td><?= $row['supplier']; ?></td>
-                <td><strong><?= $row['stok']; ?> pcs</strong></td>
-                <td>Rp <?= number_format($row['harga_beli']); ?></td>
-                <td>Rp <?= number_format($row['harga_jual']); ?></td>
-            </tr>
-            <?php } ?>
         </tbody>
     </table>
     
