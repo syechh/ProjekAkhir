@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION["username"]) && ($_SESSION["role"])) {
+    header("location: ../index.php");
+    exit();
+}
+$message = ""; 
 require '../config/koneksi.php'; 
 
 if(isset($_POST['tambah_item'])){
@@ -35,7 +40,6 @@ if(isset($_GET['hapus_index'])){
 
 
 if(isset($_POST['simpan_transaksi'])){
-    $pembeli = $_POST['pembeli'];
     $tanggal = $_POST['tanggal'];
 
     if(!empty($_SESSION['keranjang_pembelian'])){
@@ -45,9 +49,10 @@ if(isset($_POST['simpan_transaksi'])){
             $qty = $cart['qty'];
             $nama_barang = $cart['nama'];
             $harga_beli = $cart['harga'];
+            $supplier = $cart['supplier'];
             $total = $cart['subtotal'];
             
-            $query_insert = "INSERT INTO pembelian (tanggal, id_barang, nama_barang, nama_supplier, qty, harga_beli_satuan, total_harga) 
+            $query_insert = "INSERT INTO pembelian (tanggal, id_barang, nama_barang, supplier, qty, harga_beli_satuan, total_harga) 
                              VALUES ('$tanggal', '$id_brg', '$nama_barang', '$supplier', '$qty', '$harga_beli', '$total')";
             mysqli_query($con, $query_insert);
             
@@ -55,10 +60,16 @@ if(isset($_POST['simpan_transaksi'])){
         }
         
         unset($_SESSION['keranjang_pembelian']);
-        echo "<script>alert('Transaksi Berhasil Disimpan!'); window.location.href='pembelian.php';</script>";
-    } else {
-        echo "<script>alert('Keranjang kosong!');</script>";
-    }
+        $message = '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i> Berhasil melakukan input masuk barang!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+        }else{
+        $message = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Gagal melakukan input masuk barang.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+        }
 }
 
 
@@ -75,6 +86,7 @@ if(!empty($_SESSION['keranjang_pembelian'])){
 <head>
     <title>Input Pembelian</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -82,22 +94,28 @@ if(!empty($_SESSION['keranjang_pembelian'])){
   <div class="container">
     <a class="navbar-brand" href="../dashboard.php">Inventory System</a>
     <div class="navbar-nav">
+       <?php if ($_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="../barang/barang.php">Master Data Barang</a>
-      <a class="nav-link" href="../pembelian/pembelian.php">Input Masuk Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'penjaga gudang' || $_SESSION['role'] == 'admin') { ?>
+      <a class="nav-link active" href="../pembelian/pembelian.php">Input Masuk Barang</a>
       <a class="nav-link" href="../penjualan/penjualan.php">Input Keluar Barang</a>
+      <?php } ?>
+      <?php if ($_SESSION['role'] == 'owner' || $_SESSION['role'] == 'admin') { ?>
       <a class="nav-link" href="../laporan/laporan_pembelian.php">Laporan Pembelian</a>
       <a class="nav-link" href="../laporan/laporan_penjualan.php">Laporan Penjualan</a>
-      <a class="nav-link" href="../index.php">Log Out</a>
+      <?php } ?>
+      <a class="nav-link text-danger fw-bold" href="../index.php">Log Out</a>
     </div>
   </div>
 </nav>
 
 <div class="container mt-4">
     <div class="row">
-        
+        <?php echo $message; ?>
         <div class="col-md-4">
             <div class="card shadow-sm">
-                <div class="card-header bg-white"><strong>1. Pilih Barang Masuk</strong></div>
+                <div class="card-header bg-white"><strong>Pilih Barang Masuk</strong></div>
                 <div class="card-body">
                     <form method="POST">
                         <div class="mb-3">
@@ -113,10 +131,10 @@ if(!empty($_SESSION['keranjang_pembelian'])){
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label>Jumlah (Qty)</label>
+                            <label>Qty</label>
                             <input type="number" name="qty" class="form-control" required min="1" placeholder="0">
                         </div>
-                        <button type="submit" name="tambah_item" class="btn btn-primary w-100">+ Tambahkan</button>
+                        <button type="submit" name="tambah_item" class="btn btn-primary w-100">Tambahkan</button>
                     </form>
                 </div>
             </div>
@@ -124,7 +142,7 @@ if(!empty($_SESSION['keranjang_pembelian'])){
 
         <div class="col-md-8">
             <div class="card shadow-sm">
-                <div class="card-header bg-white"><strong>2. Review Transaksi</strong></div>
+                <div class="card-header bg-white"><strong>Review Transaksi</strong></div>
                 <div class="card-body">
                     <form method="POST">
                         <div class="row mb-3">

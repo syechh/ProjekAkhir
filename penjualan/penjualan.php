@@ -6,7 +6,7 @@ if (!isset($_SESSION["username"]) && ($_SESSION["role"])) {
 }
 
 require '../config/koneksi.php'; 
-
+$message = "";
 
 if(isset($_POST['tambah_item'])){
     $id_barang = $_POST['id_barang'];
@@ -59,10 +59,16 @@ if(isset($_POST['simpan_transaksi'])){
         }
         
         unset($_SESSION['keranjang_penjualan']);
-        echo "<script>alert('Transaksi Berhasil Disimpan!'); window.location.href='penjualan.php';</script>";
-    } else {
-        echo "<script>alert('Keranjang kosong!');</script>";
-    }
+       $message = '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i> Berhasil melakukan input keluar barang!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+        }else{
+        $message = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Gagal melakukan input keluar barang.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+        }
 }
 ?>
 
@@ -96,7 +102,7 @@ if(isset($_POST['simpan_transaksi'])){
 
 <div class="container mt-4">
     <div class="row">
-        
+         <?php echo $message; ?>
         <div class="col-md-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-white"><strong>Pilih Barang Keluar</strong></div>
